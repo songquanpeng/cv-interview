@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import torchvision
 
+
 # https://github.com/harskish/ganspace/blob/65b0c4c7a4bbdcb5fedebb7c033dab59e27d61c0/models/wrappers.py#L73
 def sample_np(self, z=None, n_samples=1, seed=None):
     """
