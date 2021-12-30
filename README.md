@@ -2,6 +2,10 @@
 
 > PyTorch code examples.
 
+I will try to give the official implementation & my own implementation for reference. 
+
+Code at this repository may not be fully tested, so use it at your own risk.
+
 ## Datasets
 + [ ] CelebA & CelebA-HQ
 + [ ] FFHQ
