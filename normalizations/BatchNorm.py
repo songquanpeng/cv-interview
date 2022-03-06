@@ -18,8 +18,10 @@ def batch_norm(is_training, X, gamma, beta, moving_mean, moving_var, eps, moment
         else:
             # 使用二维卷积层的情况，计算通道维上（axis=1）的均值和方差。这里我们需要保持X的形状以便后面可以做广播运算
             # torch.Tensor 高维矩阵的表示： （nSample）x C x H x W，所以对C维度外的维度求均值
-            mean = X.mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
-            var = ((X - mean) ** 2).mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
+            # mean = X.mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
+            mean = X.mean(dim=[0, 2, 3], keepdim=True)
+            # var = ((X - mean) ** 2).mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
+            var = ((X - mean) ** 2).mean(dim=[0, 2, 3], keepdim=True)
         # 训练模式下用当前的均值和方差做标准化
         X_hat = (X - mean) / torch.sqrt(var + eps)
         # 更新移动平均的均值和方差
