@@ -15,6 +15,6 @@
 11. 常见图像处理的实现。
 12. 常见的权重初始化方法的实现。
 
-## 项目项目
+## 相关项目
 + PyTorch 项目模板：https://github.com/songquanpeng/pytorch-template
 + PyTorch + Flask 项目部署模板：https://github.com/songquanpeng/pytorch-deployment
