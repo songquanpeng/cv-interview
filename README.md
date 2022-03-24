@@ -1,62 +1,20 @@
-# PyTorch Examples
+# 计算机视觉算法岗常见算法的实现
+> What I cannot create, I do not understand.
 
-> PyTorch code examples.
+## 内容
+1. 常见网络层的实现。
+2. 常见损失函数，距离度量，散度以及相似性函数的实现。
+3. 常见指标的实现。
+4. 常见机器学习算法的实现。
+5. 经典网络的实现。
+6. 常见归一化方法的实现。
+7. 常见优化器的实现。
+8. 常见正则化方法的实现。
+9. 常见可视化方法的实现。
+10. 常见激活函数的实现。
+11. 常见图像处理的实现。
+12. 常见的权重初始化方法的实现。
 
-I will try to give the official implementation & my own implementation for reference. 
-
-Code at this repository may not be fully tested, so use it at your own risk.
-
-## Datasets
-+ [ ] CelebA & CelebA-HQ
-+ [ ] FFHQ
-+ [ ] CUB200
-
-## Losses
-### Common Loss Functions
-+ [ ] Classification Loss
-+ [ ] Feature Matching Loss
-+ [ ] Perceptual Loss
-+ [ ] Reconstruction Loss
-+ [ ] Preservation Loss
-+ [ ] Consistency Loss
-+ [ ] LPIPS Loss
-+ [ ] Contrastive Loss
-+ [ ] Cycle Loss
-+ [ ] Triplet Loss
-
-### Similarity Functions
-+ [ ] Cosine Similarity
-
-### Distance Functions
-+ [ ] Wasserstein Distance
-
-## Regularization
-+ [ ] R1 Regularization
-
-## Normalizations
-+ [ ] (BN) Batch Normalization
-+ [ ] (IN) Instance Normalization
-+ [ ] (LN) Layer Normalization
-+ [ ] (GN) Group Normalization
-+ [ ] (CBN) Conditional Batch Normalization
-+ [ ] (CIN) Conditional Instance Normalization
-+ [ ] (RN) Region Normalization
-+ [ ] (AdaIN) Adaptive Instance Normalization
-+ [ ] (SPADE) Spatially-Adaptive Normalization
-+ [ ] (SEAN) Semantic Region Adaptive Normalization
-+ [x] (RAIN) Region-aware Adaptive Instance Normalization
-+ [ ] (DRAN) Detailed Region Adaptive Normalization
-
-## Metrics
-+ [ ] FID
-+ [ ] IS
-+ [ ] PSNR
-+ [ ] SSIM
-
-
-## Tricks
-+ [ ] EMA
-
-## Related Repos
-+ https://github.com/songquanpeng/pytorch-template
-+ https://github.com/songquanpeng/pytorch-deployment
+## 项目项目
++ PyTorch 项目模板：https://github.com/songquanpeng/pytorch-template
++ PyTorch + Flask 项目部署模板：https://github.com/songquanpeng/pytorch-deployment
