@@ -2,3 +2,6 @@
 .vscode
 *.pyc
 __pycache__/
+archive/*
+!archive/.gitkeep
+*.ckpt
