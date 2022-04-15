@@ -2,6 +2,15 @@ import torch
 from torch import autograd
 
 
+# https://github.com/NVlabs/stylegan2-ada-pytorch/blob/6f160b3d22b8b178ebe533a50d4d5e63aedba21d/training/loss.py#L123
+def r1_regularization(real_images, d_real_logit):
+    # https://pytorch.org/docs/stable/generated/torch.autograd.grad.html
+    r1_grads = torch.autograd.grad(outputs=[d_real_logit.sum()], inputs=[real_images],
+                                   create_graph=True, only_inputs=True)[0]
+    r1_penalty = 0.5 * r1_grads.square().sum([1, 2, 3])
+    return r1_penalty
+
+
 # https://github.com/saic-mdal/CIPS/blob/HEAD/train.py
 def d_r1_loss(real_pred, real_img):
     grad_real, = autograd.grad(
