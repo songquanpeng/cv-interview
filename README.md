@@ -9,7 +9,7 @@
 5. 经典网络的实现（[DCGAN](./dl_models/DCGAN.py), [VGG16](./dl_models/VGG16.py)）。
 6. 常见归一化方法的实现（[BatchNorm](./normalizations/BatchNorm.py)）。
 7. 常见优化器的实现。
-8. 常见正则化方法的实现。
+8. 常见正则化方法的实现（[R1 正则化](./regularization/r1_regularization.py)）。
 9. 常见可视化方法的实现。
 10. 常见激活函数的实现。
 11. 常见图像处理的实现。
