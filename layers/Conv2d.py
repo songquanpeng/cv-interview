@@ -116,8 +116,10 @@ if __name__ == '__main__':
     assert torch.equal(my_res, official_res)
     my_conv = Conv2d(2, 1, 3, 1, 0)
     official_conv = nn.Conv2d(2, 1, 3, 1, 0)
+    my_conv.weight = official_conv.weight
+    my_conv.bias = official_conv.bias
     my_res = my_conv(input)
     official_res = official_conv(input)
     print(my_res)
     print(official_res)
-    # assert torch.equal(my_res, official_res)
+    assert torch.allclose(my_res.mean(), official_res.mean())
