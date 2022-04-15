@@ -4,54 +4,61 @@ import torch
 from torch import nn
 
 
-def batch_norm(is_training, X, gamma, beta, moving_mean, moving_var, eps, momentum):
-    # 判断当前模式是训练模式还是推理模式
-    if not is_training:
-        # 如果是在推理模式下，直接使用传入的移动平均所得的均值和方差
-        X_hat = (X - moving_mean) / torch.sqrt(moving_var + eps)
-    else:
-        assert len(X.shape) in (2, 4)
-        if len(X.shape) == 2:
-            # 使用全连接层的情况，计算特征维上的均值和方差
-            mean = X.mean(dim=0)
-            var = ((X - mean) ** 2).mean(dim=0)
+def batch_norm(feature_map, gamma, beta, is_training, running_mean, running_var, momentum=0.1, epsilon=1e-5):
+    if is_training:
+        if len(feature_map.shape) == 4:
+            # feature_map: [N, C, H, W]
+            cur_mean = feature_map.mean(dim=[0, 2, 3], keepdim=True)
+            cur_var = feature_map.var(dim=[0, 2, 3], keepdim=True)
         else:
-            # 使用二维卷积层的情况，计算通道维上（axis=1）的均值和方差。这里我们需要保持X的形状以便后面可以做广播运算
-            # torch.Tensor 高维矩阵的表示： （nSample）x C x H x W，所以对C维度外的维度求均值
-            # mean = X.mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
-            mean = X.mean(dim=[0, 2, 3], keepdim=True)
-            # var = ((X - mean) ** 2).mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
-            var = ((X - mean) ** 2).mean(dim=[0, 2, 3], keepdim=True)
-        # 训练模式下用当前的均值和方差做标准化
-        X_hat = (X - mean) / torch.sqrt(var + eps)
-        # 更新移动平均的均值和方差
-        moving_mean = momentum * moving_mean + (1.0 - momentum) * mean
-        moving_var = momentum * moving_var + (1.0 - momentum) * var
-    Y = gamma * X_hat + beta  # 拉伸和偏移（变换重构）
-    return Y, moving_mean, moving_var
+            # feature_map: [N, F]
+            cur_mean = feature_map.mean(dim=[0], keepdim=True)
+            cur_var = feature_map.var(dim=[0], keepdim=True)
+        running_mean = (1 - momentum) * running_mean + momentum * cur_mean
+        running_var = (1 - momentum) * running_var + momentum * cur_var
+    else:
+        cur_mean = running_mean
+        cur_var = running_var
+    # normalize the feature map
+    feature_map = (feature_map - cur_mean) / torch.sqrt(cur_var + epsilon)
+    # scale and shift
+    feature_map = feature_map * gamma + beta
+    return feature_map, running_mean, running_var
 
 
 class BatchNorm(nn.Module):
-    def __init__(self, num_features, num_dims):  # num_features就是通道数
-        super(BatchNorm, self).__init__()
+    def __init__(self, num_features, num_dims, momentum=0.1, epsilon=1e-5):
+        self.momentum = momentum
+        self.epsilon = epsilon
+        super().__init__()
         if num_dims == 2:
             shape = (1, num_features)
         else:
             shape = (1, num_features, 1, 1)
-        # 参与求梯度和迭代的拉伸和偏移参数，分别初始化成0和1
         self.gamma = nn.Parameter(torch.ones(shape))
         self.beta = nn.Parameter(torch.zeros(shape))
-        # 不参与求梯度和迭代的变量，全在内存上初始化成0
-        self.moving_mean = torch.zeros(shape)
-        self.moving_var = torch.zeros(shape)
+        running_mean = torch.zeros(shape)
+        running_var = torch.ones(shape)  # in the official implementation, they are ones
+        self.register_buffer('running_mean', running_mean)
+        self.register_buffer('running_var', running_var)
 
-    def forward(self, X):
-        # 如果X不在内存上，将moving_mean和moving_var复制到X所在显存上
-        if self.moving_mean.device != X.device:
-            self.moving_mean = self.moving_mean.to(X.device)
-            self.moving_var = self.moving_var.to(X.device)
-        # 保存更新过的moving_mean和moving_var, Module实例的training属性默认为true, 调用.eval()后设成false
-        Y, self.moving_mean, self.moving_var = batch_norm(self.training,
-                                                          X, self.gamma, self.beta, self.moving_mean,
-                                                          self.moving_var, eps=1e-5, momentum=0.9)
-        return Y
+    def forward(self, x):
+        out, running_mean, running_var = batch_norm(x, self.gamma, self.beta, self.training, self.running_mean,
+                                                    self.running_var, self.momentum, self.epsilon)
+        if self.training:
+            self.running_mean = running_mean
+            self.running_var = running_var
+        return out
+
+
+if __name__ == '__main__':
+    batch_size, num_features, width, height = 4, 12, 16, 16
+    dummy_feature = torch.randn((batch_size, num_features, width, height))
+    my_bn = BatchNorm(num_features, 4)
+    official_bn = nn.BatchNorm2d(num_features)
+    my_res = my_bn(dummy_feature)
+    official_res = official_bn(dummy_feature)
+    assert torch.allclose(my_bn.running_mean.squeeze(), official_bn.running_mean)
+    assert torch.allclose(my_bn.running_var.squeeze(), official_bn.running_var)
+    print(my_res.mean(), my_res.var())
+    print(official_res.mean(), official_res.var())
