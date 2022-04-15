@@ -4,7 +4,8 @@ from utils.model import count_parameters
 
 
 class VGGConvBlock(nn.Module):
-    def __init__(self, num_convs, in_dim, out_dim, kernel_size=3, stride=1, padding=0):
+    def __init__(self, num_convs, in_dim, out_dim, kernel_size=3, stride=1, padding=1):
+        # please notice the padding is 1, cause the conv layers here don't reduce the size of the feature map
         super().__init__()
         layers = []
         for i in range(num_convs):
