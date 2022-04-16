@@ -86,7 +86,7 @@ class MLP:
     def forward(self, x):
         feature = x
         self.unactivated_outputs = []
-        self.activated_outputs = []
+        self.activated_outputs = [x]
         for i, (weight, bias) in enumerate(zip(self.weights, self.biases)):
             output = feature @ weight + bias
             self.unactivated_outputs.append(output)
@@ -112,9 +112,9 @@ class MLP:
         z_middle = self.unactivated_outputs[-2]
         delta_middle = weight_last @ delta_last * d_sigmoid(z_middle)
 
-        self.weights_grad[-1] += delta_last * self.activated_outputs[-1].T
+        self.weights_grad[-1] += np.outer(self.activated_outputs[-2], delta_last)
         self.biases_grad[-1] += delta_last
-        self.weights_grad[-2] += delta_middle * self.activated_outputs[-2].T
+        self.weights_grad[-2] += np.outer(self.activated_outputs[-3], delta_middle)
         self.biases_grad[-2] += delta_middle
 
     def update(self, learning_rate=0.0001):
