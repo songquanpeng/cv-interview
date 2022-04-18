@@ -17,6 +17,19 @@ def get_MNIST_loader(img_size=28, batch_size=1, dataset_path='archive/dataset'):
     return dataloader
 
 
+def get_dataloader(img_path, img_size, batch_size, num_workers=0):
+    transform = transforms.Compose([
+        transforms.Resize(img_size),
+        transforms.CenterCrop(img_size),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+    ])
+    dataset = NoLabelDataset(img_path, transform)
+    dataloader = data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=False,
+                                 num_workers=num_workers, pin_memory=True)
+    return dataloader
+
+
 def list_all_images(path, full_path=True):
     image_types = ['png', 'jpg', 'jpeg']
     image_list = []
