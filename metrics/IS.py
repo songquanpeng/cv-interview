@@ -8,7 +8,6 @@ from torchvision import transforms
 from torch.utils import data
 from tqdm import tqdm
 import torch.nn.functional as F
-from scipy.stats import entropy
 
 
 def inception_score(args):
@@ -49,6 +48,7 @@ def inception_score(args):
     print(f"Inception Score: {IS_mean:.4f}±{IS_std:.4f}")
 
     # Method #2: https://github.com/sbarratt/inception-score-pytorch/blob/master/inception_score.py
+    # from scipy.stats import entropy
     # scores = []
     # for k in range(args.split_num):
     #     split = preds[k * num_per_split:(k + 1) * num_per_split, :]
