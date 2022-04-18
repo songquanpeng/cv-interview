@@ -6,7 +6,7 @@
 2. 常见损失函数（[各种形式的对抗损失](./losses/adversarial_loss.py)），距离度量，散度以及相似性函数的实现。
 3. 常见指标的实现。
 4. 常见机器学习算法的实现（[多层感知机](./ml_models/MLP.py)）。
-5. 经典网络的实现（[DCGAN](./dl_models/DCGAN.py), [VGG16](./dl_models/VGG16.py)）。
+5. 经典网络的实现（[DCGAN](./dl_models/DCGAN.py), [VGG16](./dl_models/VGG16.py), [ResNet](./dl_models/ResNet.py)）。
 6. 常见归一化方法的实现（[BatchNorm](./normalizations/BatchNorm.py)）。
 7. 常见优化器的实现。
 8. 常见正则化方法的实现（[R1 正则化](./regularization/r1_regularization.py)）。
