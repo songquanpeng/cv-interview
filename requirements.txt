@@ -2,3 +2,4 @@ torch
 numpy
 torchvision
 munch
+pillow
