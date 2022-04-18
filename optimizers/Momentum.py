@@ -22,7 +22,7 @@ class Momentum(Optimizer):
                 buffer = param_state['momentum_buffer']
                 # v <- γ * v + g
                 buffer.mul_(self.momentum).add_(p.grad)
-            # g <- g - η * v
+            # p <- p - η * v
             p.data -= self.lr * buffer
 
 
