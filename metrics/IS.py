@@ -2,6 +2,7 @@
 import argparse
 
 import numpy as np
+import torch
 from torchvision.models.inception import inception_v3
 from utils.data import NoLabelDataset
 from torchvision import transforms
@@ -10,10 +11,11 @@ from tqdm import tqdm
 import torch.nn.functional as F
 
 
+@torch.no_grad()
 def inception_score(args):
     transform = transforms.Compose([
-        transforms.CenterCrop(args.img_size),
         transforms.Resize(args.img_size),
+        transforms.CenterCrop(args.img_size),
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
