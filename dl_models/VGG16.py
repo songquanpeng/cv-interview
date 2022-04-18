@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from utils.model import count_parameters
+import torchvision.models as models
 
 
 class VGGConvBlock(nn.Module):
@@ -31,7 +32,7 @@ class VGG16(nn.Module):
             in_dim = out_dim
             out_dim = min(out_dim * 2, max_dim)
         self.conv = nn.Sequential(*layers)
-        self.pool = nn.AdaptiveMaxPool2d((7, 7))
+        self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
         self.fc = nn.Sequential(
             nn.Linear(max_dim * 7 * 7, 4096),
             nn.ReLU(inplace=True),
@@ -44,7 +45,7 @@ class VGG16(nn.Module):
 
     def forward(self, x):
         x = self.conv(x)
-        x = self.pool(x)
+        x = self.avgpool(x)
         x = torch.flatten(x, start_dim=1)
         x = self.fc(x)
         return x
@@ -53,6 +54,7 @@ class VGG16(nn.Module):
 if __name__ == '__main__':
     vgg = VGG16()
     count_parameters(vgg, 'VGG16')
-    dummy_x = torch.randn((8, 3, 224, 224))
+    dummy_x = torch.randn((1, 3, 224, 224))
     output = vgg(dummy_x)
-    print(output)
+    official_vgg = models.vgg16()
+    count_parameters(vgg, 'Official VGG16')
