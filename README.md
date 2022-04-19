@@ -8,7 +8,7 @@
 4. 常见机器学习算法的实现（[多层感知机](./ml_models/MLP.py)）。
 5. 经典网络的实现（[DCGAN](./dl_models/DCGAN.py), [VGG16](./dl_models/VGG16.py), [ResNet](./dl_models/ResNet.py)）。
 6. 常见归一化方法的实现（[BatchNorm](./normalizations/BatchNorm.py)）。
-7. 常见优化器的实现（[SGD](./optimizers/SGD.py), [Momentum](./optimizers/Momentum.py), [Adagrad](./optimizers/Adagrad.py)）。
+7. 常见优化器的实现（[SGD](./optimizers/SGD.py), [Momentum](./optimizers/Momentum.py), [Adagrad](./optimizers/Adagrad.py), [RMSprop](./optimizers/RMSprop.py), [Adam](./optimizers/Adam.py)）。
 8. 常见正则化方法的实现（[R1 正则化](./regularization/r1_regularization.py)）。
 9. 常见可视化方法的实现。
 10. 常见激活函数的实现。
