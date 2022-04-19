@@ -9,7 +9,8 @@ class SGD(Optimizer):
 
     def step(self):
         for p in self.params:
-            p.data -= self.lr * p.grad.data
+            if p.grad is not None:
+                p.data -= self.lr * p.grad.data
 
 
 if __name__ == '__main__':
