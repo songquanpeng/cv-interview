@@ -6,9 +6,9 @@ from torch import optim
 from optimizers.misc import validator, Optimizer
 
 
-class Adam(Optimizer):
-    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), weight_decay=0, eps=1e-8):
-        super(Adam, self).__init__(params)
+class AdamW(Optimizer):
+    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), weight_decay=1e-2, eps=1e-8):
+        super(AdamW, self).__init__(params)
         self.lr = lr
         self.beta1 = betas[0]
         self.beta2 = betas[1]
@@ -31,7 +31,10 @@ class Adam(Optimizer):
                 bias_correction2 = 1 - self.beta2 ** step
                 grad = torch.clone(p.grad).detach()
                 if self.weight_decay != 0:
-                    grad.add_(p, alpha=self.weight_decay)
+                    # Adam's weight decay:
+                    # grad.add_(p, alpha=self.weight_decay)
+                    # AdamW's weight decay:
+                    p.data.mul_(1 - self.lr * self.weight_decay)
                 v = param_state['avg_grad']
                 s = param_state['avg_grad_square']
                 # v <- β1 * v + (1 - β1) * grad
@@ -49,6 +52,6 @@ if __name__ == '__main__':
         'lr': 0.001,
         'betas': (0.9, 0.999),
         'eps': 1e-8,
-        'weight_decay': 0
+        'weight_decay': 1e-2
     }
-    validator(optim.Adam, Adam, param_dict)
+    validator(optim.AdamW, AdamW, param_dict)
