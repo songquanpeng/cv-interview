@@ -3,8 +3,8 @@
 
 ## 内容
 1. 常见网络层的实现（[卷积层](./layers/Conv2d.py)，[线性层](./layers/Linear.py)）。
-2. 常见损失函数（[Adversarial losses](./losses/adversarial_loss.py), [L1 loss](./losses/other_losses.py), [Smooth L1 loss](./losses/other_losses.py), [L2 loss](./losses/other_losses.py), [MSE loss](./losses/other_losses.py), 
-[Triplet loss](./losses/other_losses.py)），距离度量，散度以及相似性函数的实现。
+2. 常见损失函数（[Adversarial Losses](./losses/adversarial_loss.py), [L1 Loss](./losses/other_losses.py), [Smooth L1 Loss](./losses/other_losses.py), [L2 Loss](./losses/other_losses.py), [MSE Loss](./losses/other_losses.py), 
+[Triplet Loss](./losses/other_losses.py), [Cross Entropy Loss](./losses/classification_loss.py), [Negative Log Likelihood Loss](./losses/classification_loss.py)），距离度量，散度以及相似性函数的实现。
 3. 常见指标的实现（[Inception Score](./metrics/IS.py), [Fréchet Inception Distance](./metrics/FID.py)）。
 4. 常见机器学习算法的实现（[多层感知机](./ml_models/MLP.py)）。
 5. 经典网络的实现（[DCGAN](./dl_models/DCGAN.py), [VGG16](./dl_models/VGG16.py), [ResNet](./dl_models/ResNet.py)）。
